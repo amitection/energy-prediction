@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import pickle
 import os
 
-model_name = 'azure_lr'
+model_name = 'azure_mlp'
 dataset = '../dataset'
 saved_models = '../saved_models'
 output = '../output'
@@ -62,25 +62,22 @@ if __name__=='__main__':
     with open(os.path.join(saved_models, model_name + '.pkl'), 'rb') as f:
         model = pickle.load(f)
 
-    X_test = test.drop(['Sum [kWh]', 'Time'], axis = 1)
+#    X_test = test.drop(['Sum [kWh]', 'Time'], axis = 1)
 #    pred = model.predict(X_test.iloc[1].reshape(1, -1))
     
-    d = {'Time': test['Time'],
-         'Sum [kWh]': model.predict(X_test)}
-    pred = pd.DataFrame(data=d)
     
-#    # generate forecasts on the test set
-#    predictions_df = generate_forecasts(test)
-#
-#    predictions_df.to_csv(os.path.join(output, model_name + '_predictions.csv'), float_format='%.4f', index=False)
-#
+    # generate forecasts on the test set
+    predictions_df = generate_forecasts(test)
+
+    predictions_df.to_csv(os.path.join(output, model_name + '_predictions.csv'), float_format='%.4f', index=False)
+
 #    # Store the trained model in the Outputs folder.
 #    with open(os.path.join('.', output, model_name + '.pkl'), 'wb') as f:
 #        pickle.dump(model, f)
-#
-#
-##    test = test[1000: 2000]
-##    predictions_df = predictions_df[1000: 2000]
+
+
+    test = test[1000: 2000]
+    predictions_df = predictions_df[1000: 2000]
     plt.plot(test['Time'], test['Sum [kWh]'], color='blue')
-    plt.plot(pred['Time'], pred['Sum [kWh]'], color = 'red')
-    plt.show()
+    plt.plot(predictions_df['Time'], predictions_df['pred_t1'], color = 'red')
+    plt.savefig('output_figs/res.png', format='eps', dpi=1000)
