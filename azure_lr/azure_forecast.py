@@ -8,6 +8,8 @@ Created on Thu May 17 17:05:39 2018
 
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pickle
 import os
@@ -80,4 +82,4 @@ if __name__=='__main__':
     predictions_df = predictions_df[1000: 2000]
     plt.plot(test['Time'], test['Sum [kWh]'], color='blue')
     plt.plot(predictions_df['Time'], predictions_df['pred_t1'], color = 'red')
-    plt.savefig('output_figs/res.png', format='eps', dpi=1000)
+    plt.savefig('output_figs/res.png', dpi=1000)
