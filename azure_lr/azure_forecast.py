@@ -81,10 +81,10 @@ if __name__=='__main__':
 #        pickle.dump(model, f)
 
 
-    test = test[1000: 40000]
+    test = test[1000: 4000]
     pred = pred[1000: 4000]
 #    predictions_df = predictions_df[1000: 2000]
     plt.plot(test['Time'], test['Sum [kWh]'], color='blue', label = 'Y_true')
 #    plt.plot(predictions_df['Time'], predictions_df['pred_t1'], color = 'red')
-    plt.plot(test['Time'], test['Sum [kWh]'], color='red', label = 'Y_pred')
+    plt.plot(pred['Time'], pred['Sum [kWh]'], color='red', label = 'Y_pred')
     plt.savefig('output_figs/res.png', dpi=1000)
