@@ -64,22 +64,27 @@ if __name__=='__main__':
     with open(os.path.join(saved_models, model_name + '.pkl'), 'rb') as f:
         model = pickle.load(f)
 
-#    X_test = test.drop(['Sum [kWh]', 'Time'], axis = 1)
+    X_test = test.drop(['Sum [kWh]', 'Time'], axis = 1)
 #    pred = model.predict(X_test.iloc[1].reshape(1, -1))
     
+    d = {'Time': test['Time'],
+         'Sum [kWh]': model.predict(X_test)}
+    pred = pd.DataFrame(data=d)
     
     # generate forecasts on the test set
-    predictions_df = generate_forecasts(test)
-
-    predictions_df.to_csv(os.path.join(output, model_name + '_predictions.csv'), float_format='%.4f', index=False)
+#    predictions_df = generate_forecasts(test)
+#
+#    predictions_df.to_csv(os.path.join(output, model_name + '_predictions.csv'), float_format='%.4f', index=False)
 
 #    # Store the trained model in the Outputs folder.
 #    with open(os.path.join('.', output, model_name + '.pkl'), 'wb') as f:
 #        pickle.dump(model, f)
 
 
-    test = test[1000: 2000]
-    predictions_df = predictions_df[1000: 2000]
-    plt.plot(test['Time'], test['Sum [kWh]'], color='blue')
-    plt.plot(predictions_df['Time'], predictions_df['pred_t1'], color = 'red')
+    test = test[1000: 40000]
+    pred = pred[1000: 4000]
+#    predictions_df = predictions_df[1000: 2000]
+    plt.plot(test['Time'], test['Sum [kWh]'], color='blue', label = 'Y_true')
+#    plt.plot(predictions_df['Time'], predictions_df['pred_t1'], color = 'red')
+    plt.plot(test['Time'], test['Sum [kWh]'], color='red', label = 'Y_pred')
     plt.savefig('output_figs/res.png', dpi=1000)
