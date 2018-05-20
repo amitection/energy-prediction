@@ -37,13 +37,11 @@ server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # get local machine name
 server_socket.bind((args.host, args.port))
 
-# queue up to 5 requests
-server_socket.listen(5)
+print("Instantiating server socket on port " + str(args.port) + " ...")
 
 # Host a server
-print("Instantiating server socket on port " + str(args.port) + " ...")
-server_socket.start()
-
+# queue up to 5 requests
+server_socket.listen(5)
 
 def initiate_server(keepRunning):
     # Infinitely keep listening to messages
