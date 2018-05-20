@@ -15,6 +15,7 @@ import argparse
 import socket
 import json
 import traceback
+import constants
 
 parser = argparse.ArgumentParser(description='Energy Consumption Prediction')
 
@@ -44,24 +45,60 @@ print("Instantiating server socket on port " + str(args.port) + " ...")
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.start()
 
-# Infinitely keep listening to messages
-while keepRunning:
-    try:
-        # establish a connection
-        clientsocket, addr = server_socket.accept()
+
+def initiate_server(keepRunning):
+    # Infinitely keep listening to messages
+    while keepRunning:
+        try:
+            # establish a connection
+            clientsocket, addr = server_socket.accept()
+            
+            print("Got a connection from %s" % str(addr))
+            msg = clientsocket.recv(4096)
+            recvd_msg = json.loads(msg)
+            
+            # If message topic incorrect 
+            if 'topic' not in recvd_msg or (recvd_msg['topic'] not in constants.topic):
+                clientsocket.send(json.dumps({'error':constants.satus['400']}).encode('utf-8'))
+            
+            elif recvd_msg['topic'] == 'EXIT':
+                keepRunning = False
+                clientsocket.send(json.dumps({'message':'Exiting!'}).encode('utf-8'))
+            else:
+                message = message_handler(recvd_msg)
+                clientsocket.send(message)
+            
+            
         
-        print("Got a connection from %s" % str(addr))
-        msg = clientsocket.recv(4096)
-        recvd_msg = json.loads(msg)
+        except Exception as ex:
+            traceback.print_tb(ex.__traceback__)
+            print("ERROR: Exception caught on server")
+            clientsocket.send(json.dumps({'error':constants.satus['500']}).encode('utf-8'))
         
-        predicted_value = ecp.predict(recvd_msg['timestamp'])
-        clientsocket.send(json.dumps({'value':predicted_value}).encode('utf-8'))
-    
-    except Exception as ex:
-        traceback.print_tb(ex.__traceback__)
-        print("ERROR: Exception caught on server")
-        clientsocket.send(json.dumps({'error':'INTERNAL SERVER ERROR'}).encode('utf-8'))
-    
-    finally:
-        clientsocket.close()
-                
+        finally:
+            clientsocket.close()
+
+
+
+# Start the server
+initiate_server(keepRunning)
+
+
+def message_handler(recvd_msg):
+    if recvd_msg['topic'] == 'FORECAST_CONSUMPTION':
+            return forecast_consumption(recvd_msg)
+    elif recvd_msg['topic'] == 'FORECAST_GENERATION':
+            return forecast_generation(recvd_msg)
+        
+def forecast_consumption(recvd_msg):
+    # message contains the timestamp
+    predicted_value = ecp.predict(recvd_msg['message'])
+    message = json.dumps({'message':predicted_value}).encode('utf-8')
+    return message
+
+def forecast_generation(recvd_msg):
+    # message contains the timestamp
+    print('Implementation TBD')
+    # TODO
+    message = json.dumps({'message':'To be implemented'}).encode('utf-8')
+    return message
