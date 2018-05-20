@@ -42,8 +42,7 @@ server_socket.listen(5)
 
 # Host a server
 print("Instantiating server socket on port " + str(args.port) + " ...")
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.start()
+server_socket.start()
 
 
 def initiate_server(keepRunning):
