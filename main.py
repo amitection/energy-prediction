@@ -8,7 +8,7 @@ Created on Mon May 14 14:45:55 2018
 Main File
 
 Example Run:
-    python main.py --host 127.0.0.1 --port 10000 --parentdir house1 --model house1
+    python main.py --host 35.231.103.50 --port 10000 --parentdir house1 --model house1
 """
 import prediction
 import argparse
@@ -46,10 +46,10 @@ server_socket.listen(5)
 def initiate_server(keepRunning):
     # Infinitely keep listening to messages
     while keepRunning:
+        # establish a connection
+        clientsocket, addr = server_socket.accept()
+        
         try:
-            # establish a connection
-            clientsocket, addr = server_socket.accept()
-            
             print("Got a connection from %s" % str(addr))
             msg = clientsocket.recv(4096)
             recvd_msg = json.loads(msg)
