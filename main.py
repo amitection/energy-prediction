@@ -35,7 +35,7 @@ keepRunning = True
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # get local machine name
-server_socket.bind((args.host, args.port))
+server_socket.bind((socket.gethostname(), args.port))
 
 print("Instantiating server socket on port " + str(args.port) + " ...")
 
