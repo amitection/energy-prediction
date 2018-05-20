@@ -8,7 +8,7 @@ Created on Mon May 14 14:45:55 2018
 Main File
 
 Example Run:
-    pythonw main.py --port 10000 --trainset SumProfiles_1800s.Electricity.csv
+    python main.py --host 127.0.0.1 --port 10000 --parentdir test --model house1
 """
 import prediction
 import argparse
@@ -20,7 +20,7 @@ import constants
 parser = argparse.ArgumentParser(description='Energy Consumption Prediction')
 
 # Command Line Args
-parser.add_argument('--host', type=int, required=True, help='Host on which this service will run.')
+parser.add_argument('--host', required=True, help='Host on which this service will run.')
 parser.add_argument('--port', type=int, required=True, help='Port on which this service will run.')
 parser.add_argument('--parentdir', required=True, help='Path to parent directory of all necessary files.')
 parser.add_argument('--model', required=True, help='Model name.')
