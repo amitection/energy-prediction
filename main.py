@@ -55,7 +55,7 @@ def initiate_server(keepRunning):
             recvd_msg = json.loads(msg)
             
             # If message topic incorrect 
-            if 'topic' not in recvd_msg or (recvd_msg['topic'] not in constants.topic):
+            if ('topic' not in recvd_msg) or (recvd_msg['topic'] not in constants.topic):
                 clientsocket.send(json.dumps({'error':constants.satus['400']}).encode('utf-8'))
             
             elif recvd_msg['topic'] == 'EXIT':
@@ -67,8 +67,8 @@ def initiate_server(keepRunning):
             
             
         
-        except Exception as ex:
-            traceback.print_tb(ex.__traceback__)
+        except Exception:
+            print(traceback.format_exc())
             print("ERROR: Exception caught on server")
             clientsocket.send(json.dumps({'error':constants.satus['500']}).encode('utf-8'))
         
