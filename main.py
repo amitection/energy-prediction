@@ -76,6 +76,9 @@ def initiate_server(keepRunning):
         
         finally:
             clientsocket.close()
+    
+    # Close the server socket
+    server_socket.close()
 
 
 
