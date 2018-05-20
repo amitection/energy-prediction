@@ -8,7 +8,7 @@ Created on Mon May 14 14:45:55 2018
 Main File
 
 Example Run:
-    python main.py --host 127.0.0.1 --port 10000 --parentdir test --model house1
+    python main.py --host 127.0.0.1 --port 10000 --parentdir house1 --model house1
 """
 import prediction
 import argparse
@@ -35,7 +35,7 @@ keepRunning = True
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # get local machine name
-server_socket.bind(args.host, args.port)
+server_socket.bind((args.host, args.port))
 
 # queue up to 5 requests
 server_socket.listen(5)
