@@ -77,6 +77,9 @@ def initiate_server(keepRunning):
             finally:
                 clientsocket.close()
     finally:
+        print("Shutdown hook initiated..")
+        
+        print("Closing server socket safely.")
         # Close the server socket
         server_socket.close()
 
