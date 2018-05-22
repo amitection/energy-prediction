@@ -13,7 +13,7 @@ Example Run:
 import prediction
 import argparse
 import socket
-import json
+import simplejson as json
 import traceback
 import constants
 
@@ -52,6 +52,7 @@ def initiate_server(keepRunning):
         try:
             print("Got a connection from %s" % str(addr))
             msg = clientsocket.recv(4096)
+            print('Ori message: '+str(msg))
             recvd_msg = json.loads(msg)
             
             # If message topic incorrect 
