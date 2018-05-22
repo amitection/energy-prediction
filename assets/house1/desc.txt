@@ -1,0 +1,4 @@
+1 house
+recorded every 30 mins
+demand_train - 2014 - 2016
+demand_test - 2016 - 2017

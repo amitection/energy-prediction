@@ -10,7 +10,7 @@ Main File
 Example Run:
     python main.py --host 35.231.103.50 --port 10000 --parentdir house1 --model house1
 """
-import prediction
+import consumption.prediction as consumption_prediction
 import argparse
 import socket
 import simplejson as json
@@ -28,7 +28,7 @@ parser.add_argument('--model', required=True, help='Model name.')
 args = parser.parse_args()
 
 # Train the model initially
-ecp = prediction.EnergyConsumptionPrediction(args.parentdir, args.model)
+ecp = consumption_prediction.EnergyConsumptionPrediction(args.parentdir, args.model)
 keepRunning = True
 
 # Create a server socket
