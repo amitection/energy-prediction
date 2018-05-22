@@ -84,11 +84,6 @@ def initiate_server(keepRunning):
         server_socket.close()
 
 
-
-# Start the server
-initiate_server(keepRunning)
-
-
 def message_handler(recvd_msg):
     if recvd_msg['topic'] == 'FORECAST_CONSUMPTION':
             return forecast_consumption(recvd_msg)
@@ -107,3 +102,10 @@ def forecast_generation(recvd_msg):
     # TODO
     message = json.dumps({'message':'To be implemented'}).encode('utf-8')
     return message
+
+
+# Start the server
+initiate_server(keepRunning)
+
+
+
