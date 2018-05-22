@@ -53,8 +53,8 @@ class EnergyConsumptionPrediction:
         datapoint = self.test_data.loc[self.test_data['Time'] == timestamp]
         X_test = datapoint.drop(['Sum [kWh]', 'Time'], axis = 1)
         pred = self.model.predict(X_test)
-        
-        print('True: '+str(datapoint['Sum [kWh]'])+' Predicted'+str(pred))
+        pred=pred[0]
+        print('True: '+str(datapoint['Sum [kWh]'])+' Predicted: '+str(pred))
         return pred
     
     
