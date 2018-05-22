@@ -50,7 +50,7 @@ class EnergyConsumptionPrediction:
         return model
         
     def predict(self, timestamp):
-        datapoint = self.test_data.loc[self.test_data['Time'] == timestamp].reshape(1, -1)
+        datapoint = self.test_data.loc[self.test_data['Time'] == timestamp]
         X_test = datapoint.drop(['Sum [kWh]', 'Time'], axis = 1)
         pred = self.model.predict(X_test)
         
