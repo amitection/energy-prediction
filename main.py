@@ -45,39 +45,40 @@ server_socket.listen(5)
 
 def initiate_server(keepRunning):
     # Infinitely keep listening to messages
-    while keepRunning:
-        # establish a connection
-        clientsocket, addr = server_socket.accept()
-        
-        try:
-            print("Got a connection from %s" % str(addr))
-            msg = clientsocket.recv(4096)
-            print('Ori message: '+str(msg))
-            recvd_msg = json.loads(msg)
+    try:
+        while keepRunning:
+            # establish a connection
+            clientsocket, addr = server_socket.accept()
             
-            # If message topic incorrect 
-            if ('topic' not in recvd_msg) or (recvd_msg['topic'] not in constants.topic):
-                clientsocket.send(json.dumps({'error':constants.satus['400']}).encode('utf-8'))
+            try:
+                print("Got a connection from %s" % str(addr))
+                msg = clientsocket.recv(4096)
+                print('Ori message: '+str(msg))
+                recvd_msg = json.loads(msg)
+                
+                # If message topic incorrect 
+                if ('topic' not in recvd_msg) or (recvd_msg['topic'] not in constants.topic):
+                    clientsocket.send(json.dumps({'error':constants.satus['400']}).encode('utf-8'))
+                
+                elif recvd_msg['topic'] == 'EXIT':
+                    keepRunning = False
+                    clientsocket.send(json.dumps({'message':'Exiting!'}).encode('utf-8'))
+                else:
+                    message = message_handler(recvd_msg)
+                    clientsocket.send(message)
+                
+                
             
-            elif recvd_msg['topic'] == 'EXIT':
-                keepRunning = False
-                clientsocket.send(json.dumps({'message':'Exiting!'}).encode('utf-8'))
-            else:
-                message = message_handler(recvd_msg)
-                clientsocket.send(message)
+            except Exception:
+                print(traceback.format_exc())
+                print("ERROR: Exception caught on server")
+                clientsocket.send(json.dumps({'error':constants.satus['500']}).encode('utf-8'))
             
-            
-        
-        except Exception:
-            print(traceback.format_exc())
-            print("ERROR: Exception caught on server")
-            clientsocket.send(json.dumps({'error':constants.satus['500']}).encode('utf-8'))
-        
-        finally:
-            clientsocket.close()
-    
-    # Close the server socket
-    server_socket.close()
+            finally:
+                clientsocket.close()
+    finally:
+        # Close the server socket
+        server_socket.close()
 
 
 
